@@ -1,0 +1,99 @@
+Consulta: crea 5 libros con los siguientes nombres: C Sharp, Java, Python, PHP, Ruby
+In [2]: libro1=Book.objects.create(title="C Sharp")
+
+In [3]: libro2=Book.objects.create(title="Java")
+
+In [4]: libro3=Book.objects.create(title="Python")
+
+In [5]: libro4=Book.objects.create(title="PHP")
+
+In [6]: libro5=Book.objects.create(title="Ruby")
+
+Consulta: Crea 5 autores diferentes: Jane Austen, Emily Dickinson, Fyodor Dostoevksy, William Shakespeare, Lau Tzu
+
+In [8]: autor1=Author.objects.create(first_name="Jane", last_name="Austen")
+
+In [9]: autor2=Author.objects.create(first_name="Emily", last_name="Dickinson")
+
+In [10]: autor3=Author.objects.create(first_name="Fyodor", last_name="Dostoevksy")
+In [12]: autor4=Author.objects.create(first_name="William", last_name="Shakespeare")
+In [13]: autor5=Author.objects.create(first_name="Lau", last_name="Tzu")
+Cree y ejecute los archivos de migración para actualizar la tabla en su base de datos.
+py manage.py makemigrations
+py manage.py migrate
+Consulta: cambie el nombre del libro de C Sharp a C #
+In [1]: from books_authors_app.models import Book , Author
+
+In [2]: bookUpdate=Book.objects.get(title="C Sharp")
+
+In [3]: bookUpdate.title="C #"
+In [4]: bookUpdate.save()
+
+Consulta: cambie el nombre del cuarto autor a Bill
+In [5]: authorUpdate=Author.objects.get(first_name="William")
+
+In [6]: authorUpdate.first_name="Bill"
+
+In [7]: authorUpdate.save()
+Consulta: Asigna el primer autor a los primeros 2 libros.
+In [8]: book1=Book.objects.get(id=1)
+
+In [9]: book2=Book.objects.get(id=2)
+
+In [10]: author1=Author.objects.get(id=1)
+
+In [11]: author1.books.add(book1,book2)
+In [5]: author1.books.all()
+Out[5]: <QuerySet [<Book object: C # {self.id}, <Book object: Java {self.id}]>
+Consulta: Asigne el segundo autor a los primeros 3 libros.
+In [6]: author2=Author.objects.get(id=2)
+
+In [7]: author2.books.add(Book.objects.get(id=1))
+
+In [8]: author2.books.add(Book.objects.get(id=2))
+
+In [9]: author2.books.add(Book.objects.get(id=3))
+
+In [11]: author2.books.all()
+Out[11]: <QuerySet [<Book object: C # {self.id}, <Book object: Java {self.id}, <Book object: Python {self.id}]>
+
+Consulta: Asigna el tercer autor a los primeros 4 libros.
+In [12]: author3=Author.objects.get(id=3)
+
+In [13]: author3.books.add(Book.objects.get(id=1),Book.objects.get(id=2),Book.objects.get(id=3),Book.objects.get(id=4))
+         
+In [14]: author3.books.all()
+Out[14]: <QuerySet [<Book object: C # {self.id}, <Book object: Java {self.id}, <Book object: Python {self.id}, <Book object: PHP {self.id}]>
+
+Consulta: Asigne el cuarto autor a los primeros 5 libros (o en otras palabras, todos los libros)
+
+In [18]: author4.books.add(Book.objects.get(id=1),Book.objects.get(id=2),Book.objects.get(id=3),Book.objects.get(id=4),Book.objects.get(id=5))
+
+In [19]: author4.books.all()
+Out[19]: <QuerySet [<Book object: C # {self.id}, <Book object: Java {self.id}, <Book object: Python {self.id}, <Book object: PHP {self.id}, <Book object: Ruby {self.id}]>
+Consulta: recupera a todos los autores del tercer libro
+In [21]: book3=Book.objects.get(id=3)
+
+In [22]: book3.authors.all()
+Out[22]: <QuerySet [<Author object: Emily Dickinson {self.id}, <Author object: Fyodor Dostoevksy {self.id}, <Author object: Bill Shakespeare {self.id}]>
+
+Consulta: eliminar al primer autor del tercer libro
+In [23]: book3.authors.remove(Author.objects.get(id=1))
+
+In [24]: book3.authors.all()
+Out[24]: <QuerySet [<Author object: Emily Dickinson {self.id}, <Author object: Fyodor Dostoevksy {self.id}, <Author object: Bill Shakespeare {self.id}]>
+
+Consulta: Agregue el quinto autor como uno de los autores del segundo libro.
+
+In [26]: book2.authors.add(Author.objects.get(id=5))
+
+In [27]: book2.authors.all()
+Out[27]: <QuerySet [<Author object: Jane Austen {self.id}, <Author object: Emily Dickinson {self.id}, <Author object: Fyodor Dostoevksy {self.id}, <Author object: Bill Shakespeare {self.id}, <Author object: Lau Tzu {self.id}]>
+Consulta: Encuentra todos los libros de los que el tercer autor es parte
+In [28]: author3.books.all()
+Out[28]: <QuerySet [<Book object: C # {self.id}, <Book object: Java {self.id}, <Book object: Python {self.id}, <Book object: PHP {self.id}]>
+Consulta: Encuentra todos los autores que contribuyeron al quinto libro.
+In [29]: book5=Book.objects.get(id=5)
+
+In [30]: book5.authors.all()
+Out[30]: <QuerySet [<Author object: Bill Shakespeare {self.id}]>
