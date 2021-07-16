@@ -8,7 +8,30 @@
 </head>
 <body>
     <div>
-        <h3>{{libro.title}}</h3>
+        <h3>Titulo {{libro.title}} </h3> <br>
+        <h3>Id: {{libro.id}} </h3>
+
+    </div>
+    <div>
+        <h4>Descripcion: </h4>
+        <p>
+            {{libro.desc}}
+        </p>
+        <h4>Autores: </h4>
+        {% for autor in autores %}
+            <li> {{autor.first_name}}  {{autor.last_name    }}</li>
+        {% endfor %}
+        <br>
+        <form action="/book/{{libro.id}}/addAuthor" method="post">
+            {% csrf_token %}
+            
+            <select name="autoropt">
+                {%for noautor in noautores %}
+                    <option value="{{noautor.id}}">{{noautor.first_name}} {{noautor.last_name}} </option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Agregar Autor">
+        </form>
     </div>
 </body>
 </html>
